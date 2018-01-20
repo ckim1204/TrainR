@@ -5,14 +5,14 @@ class UsersController < ApplicationController
 	end
 
 	def create
-		newUser = User.new(user_params)
-		newUser.usertype_id = 1
+		user = User.new(user_params)
+		user.usertype_id = 1
 		status = 200
-		if newUser.save
-			data = newUser.to_json
+		if user.save
+			data = user.to_json
 		else
 			status = 422
-			data = { error_message: newUser.errors.full_messages.to_sentence }
+			data = { error_message: user.errors.full_messages.to_sentence }
 		end
 		render status: status, json: data
 	end
