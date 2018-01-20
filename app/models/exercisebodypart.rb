@@ -1,0 +1,2 @@
+class Exercisebodypart < ApplicationRecord
+end

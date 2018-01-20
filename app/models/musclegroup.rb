@@ -1,0 +1,2 @@
+class Musclegroup < ApplicationRecord
+end
