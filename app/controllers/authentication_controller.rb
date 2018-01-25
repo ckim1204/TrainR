@@ -18,6 +18,16 @@ class AuthenticationController < ApplicationController
 	end
 
 	def sign_up
-		user = User.new(
+		user = User.new(params?)
+		status = 200
+		if user.save
+			user.reload
+			hash = { email: user.email, password: user.password }
+			data = { token: Base64.strict_encode64(hash.to_s) }
+		else
+			status = 422
+			data = { error_message: user.errors.full_messages.to_sentence }
+		end
+		render status: status, json: data
 	end
 end
