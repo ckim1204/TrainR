@@ -20,6 +20,9 @@ gem 'puma', '~> 3.7'
 # gem 'bcrypt', '~> 3.1.7'
 gem 'composite_primary_keys'
 gem 'active_model_serializers'
+gem 'omniauth'
+gem 'omniauth-facebook'
+
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

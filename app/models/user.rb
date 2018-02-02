@@ -1,7 +1,9 @@
 class User < ApplicationRecord
-	validates_presence_of :name, :email, :password, :sex, :birthdate, :height, :weight
 	validates_uniqueness_of :email
-	before_save :encrypt_password
+	validates_presence_of :name, :email, :sex, :birthdate, :height, :weight, :provider
+	validates_inclusion_of :provider, :in => %w(device facebook)
+	validates_presence_of :password, :if => "provider == 'device'"
+	before_save :encrypt_password, :if => "provider == 'device'"
 
 	private def encrypt_password
 		self.password = Base64.strict_encode64(password)

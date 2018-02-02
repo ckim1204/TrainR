@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+
+	before_action :authentication
 	
 	private def user_params
 		params.permit(:name, :email, :password, :sex, :birthdate, :height, :weight)
@@ -6,19 +8,6 @@ class UsersController < ApplicationController
 
 	private def find_user
 		User.find(params[:id])
-	end
-
-	def create
-		user = User.new(user_params)
-		user.usertype_id = 1
-		status = 200
-		if user.save
-			data = user
-		else
-			status = 422
-			data = { error_message: user.errors.full_messages.to_sentence }
-		end
-		render status: status, json: data, serializer: UserSerializer
 	end
 
 	def update
@@ -42,4 +31,13 @@ class UsersController < ApplicationController
 		user = find_user
 		render status: status, json: user, serializer: UserSerializer
 	end
+
+	def current_user
+                data = eval(Base64.strict_decode64(request.headers['token'].to_s)) || {}
+                User.find_by(email: data[:email])
+        end
+
+        def authentication
+                render status: 401, json: { error_message: 'Unauthorized' } if current_user.nil?
+        end
 end
