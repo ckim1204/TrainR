@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-	resources :users, only: [:show, :create, :update, :destroy], path: '/users' do
+	resources :users, only: [:show, :update, :destroy], path: '/users' do
 		collection do
-			post :sign_in, controller: 'authentication'
-			post :sign_up, controller: 'authentication'
+			post 'auth/register', to: 'users#register'
+			post 'auth/login', to: 'users#login'
 		end
 	end
 	resources :musclegroups, only: [:index], path: '/musclegroups'
+	resources :exercises, only: [:index], path: '/exercises'
+	resources :workouts, only: [:index, :create], path: '/workouts'
 end

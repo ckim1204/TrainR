@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180126204138) do
+ActiveRecord::Schema.define(version: 20180801212035) do
 
   create_table "bodyparts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
@@ -29,10 +29,12 @@ ActiveRecord::Schema.define(version: 20180126204138) do
 
   create_table "exercises", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
-    t.string "descr"
+    t.text "descr"
     t.string "imgURL"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "muscle_id"
+    t.index ["muscle_id"], name: "index_exercises_on_muscle_id"
   end
 
   create_table "injuries", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -57,6 +59,7 @@ ActiveRecord::Schema.define(version: 20180126204138) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "imgURL"
   end
 
   create_table "muscles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -70,7 +73,7 @@ ActiveRecord::Schema.define(version: 20180126204138) do
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string "name"
     t.string "email"
-    t.string "password"
+    t.string "password_digest"
     t.string "sex"
     t.date "birthdate"
     t.integer "height"
@@ -78,7 +81,7 @@ ActiveRecord::Schema.define(version: 20180126204138) do
     t.bigint "usertype_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "provider"
+    t.string "musclegroup_plan"
     t.index ["usertype_id"], name: "index_users_on_usertype_id"
   end
 
@@ -97,18 +100,17 @@ ActiveRecord::Schema.define(version: 20180126204138) do
     t.bigint "exercise_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "times"
     t.index ["exercise_id"], name: "index_userworkouts_on_exercise_id"
     t.index ["user_id"], name: "index_userworkouts_on_user_id"
     t.index ["workout_id"], name: "index_userworkouts_on_workout_id"
   end
 
-  create_table "workouts", primary_key: ["workout_id", "exerciseorder"], force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
-    t.integer "workout_id", default: 0, null: false
-    t.integer "exerciseorder", default: 0, null: false
-    t.bigint "exercise_id"
+  create_table "workouts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string "exerciseids"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["exercise_id"], name: "index_workouts_on_exercise_id"
   end
 
+  add_foreign_key "exercises", "muscles"
 end

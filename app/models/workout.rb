@@ -1,3 +1,4 @@
 class Workout < ApplicationRecord
-	self.primary_keys = :workout_id, :exerciseorder
+	validates_uniqueness_of :exerciseids
+	has_many :userworkouts
 end

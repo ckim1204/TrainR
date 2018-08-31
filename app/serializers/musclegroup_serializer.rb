@@ -1,3 +1,3 @@
 class MusclegroupSerializer < ActiveModel::Serializer
-  attributes :id, :name
+  attributes :id, :name, :imgURL
 end
